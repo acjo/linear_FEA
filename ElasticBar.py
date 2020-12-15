@@ -185,17 +185,16 @@ map_1 = indexmap[0]
 map_2 = indexmap[1]
 zero = lambda x: 0
 global_functions = []
-#global_functions.append(spline_bases[0].spline_functions[0])
 
-for k in range(0, 4):
+for k in range(0, 5):
     new = []
     if k == 0:
         new.append(spline_bases[0].spline_functions[k])
         new.append(zero)
         #global_functions.append([spline_bases[0].spline_functions[0], zero])
-    elif k == 3:
+    elif k == 4:
         new.append(zero)
-        new.append(spline_bases[1].spline_functions[k])
+        new.append(spline_bases[1].spline_functions[k-1])
         #global_functions.append([zero, spline_bases[1].spline_functions[k]])
     else:
         new.append(spline_bases[0].spline_functions[k])
@@ -203,11 +202,9 @@ for k in range(0, 4):
         #global_functions.append([spline_bases[0].spline_functions[k], spline_bases[1].spline_functions[k-1]])
     global_functions.append(new)
 
-
-print(len(global_functions))
+function = 1
 for pair in global_functions:
     rnge = []
-    function = 1
     for x in domain:
         if x <= element_boundaries[1]:
             rnge.append(pair[0](x))
@@ -218,20 +215,4 @@ for pair in global_functions:
 plt.legend(loc='best')
 plt.title('Global Basis Functions')
 plt.show()
-
-
-
-
-
-
-'''
-#FIXME: figure out a way to graph the global basis functions
-ax3 = plt.subplot(133)
-for i in range(0, en):
-    domain = np.linspace(element_boundaries[i], element_boundaries[i+1], 100)
-    for k in range(0, p+1):
-        rnge = spline_bases[i].spline_functions[k](domain)
-        ax2.plot(domain, rnge)
-plt.title('Paramateric Domain Spline Basis P' + str(p) + ' C' + str(k_continuity) )
-'''
 
