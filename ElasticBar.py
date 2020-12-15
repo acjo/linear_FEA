@@ -144,12 +144,13 @@ bases = [compute_bernstein_basis(p, element_boundaries[i], element_boundaries[i+
 
 spline_bases = [compute_spline_basis(p, k_continuity, element_boundaries[i], element_boundaries[i+1], i, en) for i in range(0, en)]
 
-
-
 '''
 Visualization
 '''
 markers = ['-', '--', '-.', ':', '-o', '-*']
+funcN = en + p
+
+indexmap = [[i+j for j in range(0, p+1)] for i in range(1, en+1)]
 
 #visualizing parametric domain
 ax1 = plt.subplot(121)
@@ -159,18 +160,69 @@ for i in range(0, en):
         rnge = bases[i].bernstein_functions[k](domain)
         #plot_label = 'B_' + str(k) +'^' + str(k) + str(element_boundaries[i]) + str(element_boundaries[i+1])
         ax1.plot(domain, rnge)
-    marker = 'k' + markers[i]
-    ax1.plot(np.linspace(element_boundaries[1 + i], element_boundaries[i + 1],10), np.linspace(-0.5, 1.5, 10), marker, ms = 4, label = 'Upper Element Boundary ' + str(i+1))
-plt.title('Parametric Domain Bernstein Basis P' + str(p) )
-plt.legend(loc='best', prop={'size': 6})
-#bbox_to_anchor(1.1,1)
+    #marker = 'k' + markers[i]
+    #ax1.plot(np.linspace(element_boundaries[1 + i], element_boundaries[i + 1],10), np.linspace(-0.5, 1.5, 10), marker, ms = 4, label = 'Upper Element Boundary: ' + str(i+1))
+ax1.set_title('Parametric Domain Bernstein Basis P: ' + str(p) )
+#ax1.legend(loc='best', prop={'size': 6})
 ax2 = plt.subplot(122)
+function = 1
 for i in range(0, en):
     domain = np.linspace(element_boundaries[i], element_boundaries[i+1], 100)
     for k in range(0, p+1):
         rnge = spline_bases[i].spline_functions[k](domain)
-        ax2.plot(domain, rnge)
-plt.title('Paramateric Domain Spline Basis P' + str(p) + ' C' + str(k_continuity) )
+        ax2.plot(domain, rnge, label='function: ' + str(function))
+        function += 1
+ax2.legend(loc='best', prop={'size': 8})
+ax2.set_title('Paramateric Domain Spline Basis (local) P: ' + str(p) + ', C: ' + str(k_continuity) )
+plt.suptitle('Element Number: ' +str(en))
+plt.show()
+
+#plot functions from a global standpoint en=2, p=3, k=2
+domain = np.linspace(le, re, 1000)
+
+
+map_1 = indexmap[0]
+map_2 = indexmap[1]
+zero = lambda x: 0
+global_functions = []
+#global_functions.append(spline_bases[0].spline_functions[0])
+
+for k in range(0, 4):
+    new = []
+    if k == 0:
+        new.append(spline_bases[0].spline_functions[k])
+        new.append(zero)
+        #global_functions.append([spline_bases[0].spline_functions[0], zero])
+    elif k == 3:
+        new.append(zero)
+        new.append(spline_bases[1].spline_functions[k])
+        #global_functions.append([zero, spline_bases[1].spline_functions[k]])
+    else:
+        new.append(spline_bases[0].spline_functions[k])
+        new.append(spline_bases[1].spline_functions[k-1])
+        #global_functions.append([spline_bases[0].spline_functions[k], spline_bases[1].spline_functions[k-1]])
+    global_functions.append(new)
+
+
+print(len(global_functions))
+for pair in global_functions:
+    rnge = []
+    function = 1
+    for x in domain:
+        if x <= element_boundaries[1]:
+            rnge.append(pair[0](x))
+        else:
+            rnge.append(pair[1](x))
+    plt.plot(domain, rnge, label = 'function: ' + str(function))
+    function += 1
+plt.legend(loc='best')
+plt.title('Global Basis Functions')
+plt.show()
+
+
+
+
+
 
 '''
 #FIXME: figure out a way to graph the global basis functions
@@ -183,4 +235,3 @@ for i in range(0, en):
 plt.title('Paramateric Domain Spline Basis P' + str(p) + ' C' + str(k_continuity) )
 '''
 
-plt.show()

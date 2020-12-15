@@ -203,7 +203,6 @@ class SplineBasis(BernsteinBasis):
                 self.operator = extraction_operator(p, k, i, en)
                 functions = self.bernstein_functions
             else:
-                print('Here')
                 self.operator = extraction_operator(p, k, i, en)
                 functions = matrix_mult(self.operator, self.bernstein_functions)
         elif p == 3 and k == 2:
