@@ -15,7 +15,7 @@ class meshGreville( object ):
         self.extraction = extraction #extraction operator for each element
         self.nodes = nodes #nodes (evenly space)
         self.map = indexing #element to global basis function index map
-        self.boundaries = bound
+        self.boundaries = bound #bounds for element
 
 
 def buildMesh( p, elementN, flex_geom ):

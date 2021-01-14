@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 #import utility modules
 import basismesh
 import quadrature
+import assembly
 
 
 
@@ -32,6 +33,11 @@ physical_geometry = [ 0, 3 ]
 flex_geometry = [ 0, 4 ]
 
 
+#build mesh
 mesh = basismesh.buildMesh( p, en, flex_geometry )
 
-points, weights, IE = quadrature.getQuadrature(rule, eN)
+#get points, weights, quadrature map
+points, weights, quadMap = quadrature.getQuadrature(rule, eN)
+
+#assemble k matrix
+k = assembly.assembleK( mesh.nodes, mesh.extraction, mesh.map, points, weights, quadMap )
