@@ -34,10 +34,10 @@ flex_geometry = [ 0, 4 ]
 
 
 #build mesh
-mesh = basismesh.buildMesh( p, en, flex_geometry )
+mesh = basismesh.buildMesh( p, eN, flex_geometry )
 
 #get points, weights, quadrature map
-points, weights, quadMap = quadrature.getQuadrature(rule, eN)
+points, weights, quadMap = quadrature.assembleQuadrature( rule, eN )
 
 #assemble k matrix
 k = assembly.assembleK( mesh.nodes, mesh.extraction, mesh.map, points, weights, quadMap )

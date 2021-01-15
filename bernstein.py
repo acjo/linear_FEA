@@ -58,7 +58,7 @@ def extractionOperator( p, k, c, eN ):
             eN (int): total element number
         Returns:
             oP ((p+1, p+1) ndarray): the extraction operator
-        Raise:
+        Raises:
             ValueError: if the c is larger or smaller than it should be for the number of elements
             NotImplementedError: if there is a mismatched P and K
     '''

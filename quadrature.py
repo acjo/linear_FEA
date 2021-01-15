@@ -1,7 +1,6 @@
 #quadrature.py
 import numpy as np
 
-
 def assembleQuadrature( n, elemN ):
     ''' assembles the quadrature points, weights, and the quadrature point to element index map
         Paramaters:
